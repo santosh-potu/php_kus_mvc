@@ -1,6 +1,7 @@
 <?php
+
 namespace Controllers;
 
-class IndexController extends BaseController{
+class IndexController extends BaseController {
     
 }

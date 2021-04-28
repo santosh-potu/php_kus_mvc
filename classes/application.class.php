@@ -3,20 +3,12 @@ namespace Kus;
 
 class Application{
     
-    private static $db = null;
-    private static $self_inst = null;
+    protected static $db;
+    protected static $self_inst;
     
     
-    private function __construct()
-    {
-        try{
-            $db = new \PDO(PDO_DSN, DB_USER,DB_PWD);
-            $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $db->query("SET CHARSET utf8"); //test query
-            self::$db = $db;
-        }catch(\PDOException $ex){
-            echo 'Connection failed:'.$ex->getMessage();
-        }           
+    private function __construct(){
+        self::$db = $this->getDbConnection();
     }
     
     public static function getInstance(){
@@ -29,45 +21,15 @@ class Application{
     }
     
     public function getDbConnection(){
+        if(!isset(self::$db)){
+            try{
+                $db = new \PDO(PDO_DSN, DB_USER,DB_PWD);
+                $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                $db->query("SET CHARSET utf8"); //Setting character set
+            }catch(\PDOException $ex){
+                echo 'Connection failed:'.$ex->getMessage();
+            }
+        }
         return self::$db;
     }
-
-
-    public static function placeholders($text, $count = 0, $separator = ",") {
-        $result = array();
-        if ($count > 0) {
-            for ($x = 0; $x < $count; $x++) {
-                $result[] = $text;
-            }
-        }
-    
-        return implode($separator, $result);
-    }
-
-    public function dbQuery($sql_statement, $bind_values = array(), $return_type = GET_RECORDSET, $fetch_style = PDO::FETCH_BOTH) {
-        $pdo = $this->getDbConnection();
-        if (!trim($sql_statement)) {
-            return false;
-        }
-        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
-        try {
-            $stmt = $pdo->prepare($sql_statement);
-            $stmt->execute($bind_values);
-            if ($return_type == GET_RECORDSET) {       //returns a 2-dimensional array
-                $result = $stmt->fetchAll($fetch_style);
-            } elseif ($return_type == GET_RECORD) {    //returns a 1-dimensional array
-                $result = $stmt->fetch($fetch_style);
-            } elseif ($return_type == GET_VALUE) {     //returns a value
-                $result = $stmt->fetchColumn();
-            }
-            $stmt->closeCursor();
-        } catch (Exception $ex) {
-            error_log($ex->getMessage());
-            $result = false;
-        }
-        return $result;
-    }
-
-    
 }
-
