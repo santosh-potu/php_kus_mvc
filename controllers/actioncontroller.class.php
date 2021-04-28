@@ -13,8 +13,7 @@ class SampleController extends BaseController {
 
     public function getRecordsAction($args = null, $optional = null) {
 
-        $sql = "SELECT *
-                        FROM users";
+        $sql = "SELECT * FROM users";
         $data = $this->db->query($sql, [], GET_RECORD, \PDO::FETCH_ASSOC);
         echo json_encode($data);
     }
