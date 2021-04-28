@@ -1,5 +1,4 @@
 <?php
-
 namespace Controllers;
 
 class SampleController extends BaseController {
@@ -7,7 +6,7 @@ class SampleController extends BaseController {
     protected $db;
 
     protected function __construct() {
-        $this->db = new \Kus\DbConnect;
+        $this->db = new \Kus\DbConnection;
         parent::__construct();
     }
 
@@ -15,7 +14,7 @@ class SampleController extends BaseController {
 
         $sql = "SELECT * FROM users";
         $data = $this->db->query($sql, [], GET_RECORD, \PDO::FETCH_ASSOC);
-        echo json_encode($data);
+        echo json_encode(array('status'=>200,'data'=>$data));
     }
 
     public function insertRecordsAction($args = null, $optional = null) {
@@ -23,7 +22,7 @@ class SampleController extends BaseController {
         $table_name = 'users';
         $data = array('Name' => 'test', 'Email' => 'test@gmail.com', 'Pwd' => 'test@123');
         $this->db->insert($table_name, $data);
-        echo 'Records added';
+        echo json_encode(array('status'=>200,'message'=>'Inserted Successfully'));
     }
 
     public function updateRecordsAction($args = null, $optional = null) {
@@ -32,7 +31,7 @@ class SampleController extends BaseController {
         $data = array('Name' => 'test1122', 'Email' => 'test@gmail.com', 'Pwd' => 'test@123');
         $where_column = array('id' => '1');
         $this->db->update($table_name, $data, $where_column);
-        echo 'Records updated';
+        echo json_encode(array('status'=>200,'message'=>'Updated Successfully'));
     }
 
     public function deleteRecordsAction($args = null, $optional = null) {
@@ -40,7 +39,7 @@ class SampleController extends BaseController {
         $table_name = 'users';
         $where_column = array('id' => '1');
         $this->db->delete($table_name, $where_column);
-        echo 'Records deleted';
+        echo json_encode(array('status'=>200,'message'=>'Deleted Successfully'));
     }
 
 }
