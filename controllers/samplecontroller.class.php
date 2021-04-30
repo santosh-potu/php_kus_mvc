@@ -9,7 +9,6 @@ class SampleController extends BaseController {
     protected function __construct() {
         $this->db = new \Kus\DbConnection;
         parent::__construct();
-        
     }
 
     public function getRecordsAction($args = null, $optional = null) {
