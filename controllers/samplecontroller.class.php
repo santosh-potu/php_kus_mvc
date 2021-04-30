@@ -4,9 +4,11 @@ namespace Controllers;
 class SampleController extends BaseController {
 
     protected $db;
+    protected $response;
 
     protected function __construct() {
         $this->db = new \Kus\DbConnection;
+        $this->response = new \Kus\APIResponse;
         parent::__construct();
     }
 
@@ -14,7 +16,7 @@ class SampleController extends BaseController {
 
         $sql = "SELECT * FROM users";
         $data = $this->db->query($sql, [], GET_RECORD, \PDO::FETCH_ASSOC);
-        echo json_encode(array('status'=>200,'data'=>$data));
+        return $this->response->json(200,'',$data);
     }
 
     public function insertRecordsAction($args = null, $optional = null) {
@@ -22,24 +24,24 @@ class SampleController extends BaseController {
         $table_name = 'users';
         $data = array('Name' => 'test', 'Email' => 'test@gmail.com', 'Pwd' => 'test@123');
         $this->db->insert($table_name, $data);
-        echo json_encode(array('status'=>200,'message'=>'Inserted Successfully'));
+        return $this->response->json(200,'Inserted Successfully');
     }
 
     public function updateRecordsAction($args = null, $optional = null) {
 
         $table_name = 'users';
         $data = array('Name' => 'test1122', 'Email' => 'test@gmail.com', 'Pwd' => 'test@123');
-        $where_column = array('id' => '1');
+        $where_column = array('id' => $args[0]);
         $this->db->update($table_name, $data, $where_column);
-        echo json_encode(array('status'=>200,'message'=>'Updated Successfully'));
+        return $this->response->json(200,'Updated Successfully');
     }
 
     public function deleteRecordsAction($args = null, $optional = null) {
 
         $table_name = 'users';
-        $where_column = array('id' => '1');
+        $where_column = array('id' => $args[0]);
         $this->db->delete($table_name, $where_column);
-        echo json_encode(array('status'=>200,'message'=>'Deleted Successfully'));
+        return $this->response->json(200,'Deleted Successfully');
     }
 
 }

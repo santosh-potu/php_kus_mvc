@@ -5,9 +5,6 @@ ini_set('display_errors', 'On');
 
 require_once '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'auto_loader.php';
 require_once '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'vars.inc.php';
-require_once '..' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'queryhelper.class.php';
-
-
 
 
 //Db credentials
