@@ -9,7 +9,6 @@ class SampleController extends BaseController {
     protected function __construct() {
         $this->db = new \Kus\DbConnection;
         $this->response = new \Kus\ApiResponse;
-        $this->view = new \Kus\BaseView();
         parent::__construct();
         
     }
