@@ -23,5 +23,20 @@ class BaseView {
     public function getRouter() {
         return $this->router;
     }
+    
+    /**
+     * Renders Json data
+     * 
+     * @param array $data
+     * @param int $http_response_code
+     * @param int $flags
+     * @param int $depth
+     * @return type
+     */
+    public function renderJson($data,$http_response_code = 200,$flags = 0 ,$depth = 512) {
+        http_response_code($http_response_code);
+        header('Content-Type: application/json');
+        echo json_encode($data, $flags, $depth);
+    }
 
 }

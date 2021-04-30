@@ -8,8 +8,6 @@ class SampleController extends BaseController {
 
     protected function __construct() {
         $this->db = new \Kus\DbConnection;
-        $this->response = new \Kus\ApiResponse;
-        $this->view = new \Kus\BaseView();
         parent::__construct();
         
     }
@@ -18,32 +16,57 @@ class SampleController extends BaseController {
 
         $sql = "SELECT * FROM users";
         $data = $this->db->query($sql, [], GET_RECORD, \PDO::FETCH_ASSOC);
-        return $this->response->json('Success',200,$data);
+        $output = ['data' => $data?$data:null];
+        $this->view->renderJson($output);
     }
 
-    public function insertRecordsAction($args = null, $optional = null) {
+    public function insertRecordAction($args = null, $optional = null) {
 
         $table_name = 'users';
-        $data = array('Name' => 'test', 'Email' => 'test@gmail.com', 'Pwd' => 'test@123');
-        $this->db->insert($table_name, $data);
-        return $this->response->json('Success',200);
+        $data = array('Name' => 'test'. rand(), 'Email' => 'test'.rand().'@gmail.com', 'Pwd' => 'test@123');
+        $result = $this->db->insert($table_name, $data);
+        if(isset($result['error'])){
+            $http_status_code = 500;
+            $message = "Unable to insert";
+        }else{
+            $http_status_code = 201;
+            $message = "Succefully inserted";
+        }
+        $output = ['message' => $message];
+        $this->view->renderJson($output,$http_status_code);
     }
 
-    public function updateRecordsAction($args = null, $optional = null) {
+    public function updateRecordAction($args = null, $optional = null) {
 
         $table_name = 'users';
-        $data = array('Name' => 'test1122', 'Email' => 'test@gmail.com', 'Pwd' => 'test@123');
+        $data = array('Name' => 'test'.rand(), 'Email' => "test".rand()."@gmail.com", 'Pwd' => 'test@123');
         $where_column = array('id' => $args[0]);
-        $this->db->update($table_name, $data, $where_column);
-        return $this->response->json('Success',200);
+        $result = $this->db->update($table_name, $data, $where_column);
+        if(!$result){
+            $http_status_code = 400;
+            $message = "Unable to update";
+        }else{
+            $http_status_code = 200;
+            $message = "Succefully updated";
+        }
+        $output = ['message' => $message];
+        $this->view->renderJson($output,$http_status_code);
     }
 
-    public function deleteRecordsAction($args = null, $optional = null) {
+    public function deleteRecordAction($args = null, $optional = null) {
 
         $table_name = 'users';
         $where_column = array('id' => $args[0]);
-        $this->db->delete($table_name, $where_column);
-        return $this->response->json('Success',200);
+        $result = $this->db->delete($table_name,$where_column);
+        if(!$result){
+            $http_status_code = 400;
+            $message = "Unable to delete";
+        }else{
+            $http_status_code = 200;
+            $message = "Succefully deleted";
+        }
+        $output = ['message' => $message];
+        $this->view->renderJson($output,$http_status_code);
     }
 
 }
