@@ -12,7 +12,7 @@ class DbConnection {
         } catch (\PDOException $ex) {
             echo 'Connection failed:' . $ex->getMessage();
         }
-    }
+    }  
 
     function query($sql_statement, $bind_values = array(), $return_type = GET_RECORDSET, $fetch_style = \PDO::FETCH_BOTH) {
 
@@ -43,7 +43,7 @@ class DbConnection {
         if (!strlen(trim($table_name)) || !( count($data) && is_array($data))) {
             return ['error' => true];
         }
-        $question_marks[] = '(' . $this->placeholders('?', sizeof($data)) . ')';
+        $question_marks[] = '(' . QueryHelper::placeholders('?', sizeof($data)) . ')';
         $insert_values = array_values($data);
         $sql = "INSERT INTO $table_name (" . implode(",", array_keys($data)) . ") VALUES " .
                 implode(',', $question_marks);
@@ -141,16 +141,4 @@ class DbConnection {
         }
         return $result;
     }
-
-    function placeholders($text, $count = 0, $separator = ",") {
-        $result = array();
-        if ($count > 0) {
-            for ($x = 0; $x < $count; $x++) {
-                $result[] = $text;
-            }
-        }
-
-        return implode($separator, $result);
-    }
-
 }

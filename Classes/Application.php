@@ -5,7 +5,7 @@ class Application{
     
     protected static $db;
     protected static $self_inst;
-    
+    protected static $router;
     
     private function __construct(){
         self::$db = $this->getDbConnection();
@@ -23,13 +23,20 @@ class Application{
     public function getDbConnection(){
         if(!isset(self::$db)){
             try{
-                $db = new \PDO(PDO_DSN, DB_USER,DB_PWD);
-                $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-                $db->query("SET CHARSET utf8"); //Setting character set
+                self::$db = new \PDO(PDO_DSN, DB_USER,DB_PWD);
+                self::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                self::$db->query('SET CHARSET '.CHARSET); //Setting character set
             }catch(\PDOException $ex){
                 echo 'Connection failed:'.$ex->getMessage();
             }
         }
         return self::$db;
+    }
+    
+    public function getRouter(){
+        if(!isset(self::$router)){
+            self::$router = \Kus\Router::getInstance();
+        }
+        return self::$router;
     }
 }

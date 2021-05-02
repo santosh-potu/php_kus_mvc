@@ -34,14 +34,16 @@ class Router {
             $controller_inst = $controller_class::getInstance();
         } else {
             $controller_inst = \Controllers\ErrorController::getInstance();
+            $controller_inst->indexAction($this->getRequestParams());
+            return false;
         }
 
-        $method_name = $method . 'Action';
+        $method_name = ($method ? $method :'index').'Action';
         if (method_exists($controller_inst, $method_name) &&
                 is_callable(array($controller_inst, $method_name), false)) {
             $controller_inst->$method_name($this->getRequestParams());
         } else {
-            $controller_inst->indexAction($this->getRequestParams());
+            \Controllers\ErrorController::getInstance()->indexAction($this->getRequestParams());
         }
     }
 
