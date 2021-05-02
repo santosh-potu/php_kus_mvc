@@ -5,7 +5,7 @@ class Application{
     
     protected static $db;
     protected static $self_inst;
-    
+    protected static $router;
     
     private function __construct(){
         self::$db = $this->getDbConnection();
@@ -31,5 +31,12 @@ class Application{
             }
         }
         return self::$db;
+    }
+    
+    public function getRouter(){
+        if(!isset(self::$router)){
+            self::$router = \Kus\Router::getInstance();
+        }
+        return self::$router;
     }
 }

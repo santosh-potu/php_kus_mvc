@@ -4,7 +4,7 @@ namespace Controllers;
 
 class BaseController {
 
-    protected static $self_inst;
+    protected static $self_instances;
     protected $view;
 
     protected function __construct() {
@@ -12,12 +12,12 @@ class BaseController {
     }
 
     public static function getInstance() {
-        if (self::$self_inst) {
-            return self::$self_inst;
-        } else {
-            self::$self_inst = new static();
-            return self::$self_inst;
+        $calledClass = get_called_class();
+        if (!isset(self::$self_instances[$calledClass])){
+            self::$self_instances[$calledClass] = new $calledClass();
         }
+
+        return self::$self_instances[$calledClass];
     }
 
     public function indexAction($args = null, $optional = null) {

@@ -12,10 +12,13 @@ class SampleController extends BaseController {
     }
 
     public function getRecordsAction($args = null, $optional = null) {
-
+        $records = null;
         $sql = "SELECT * FROM users";
-        $data = $this->db->query($sql, [], GET_RECORD, \PDO::FETCH_ASSOC);
-        $output = ['data' => $data?$data:null];
+        $data = $this->db->query($sql, [], GET_RECORDSET, \PDO::FETCH_ASSOC);
+        foreach($data as $record){
+            $records[] = $record;
+        }
+        $output = ['data' => $records];
         $this->view->renderJson($output);
     }
 
