@@ -4,9 +4,11 @@ namespace Kus\Model;
 use Kus\Db\DbConnection;
 
 abstract class BaseModel {
-    protected $db;
+    protected $_db;
+    protected $_table_name;
     
-    protected function __construct() {
-        $this->db = new DbConnection();
+    protected function __construct($args = null) {
+        $this->_db = new DbConnection();
+        $this->_table_name = $args['table_name'];
     }
 }
