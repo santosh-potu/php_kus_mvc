@@ -2,6 +2,8 @@
 
 namespace Kus;
 
+use Http\Controllers\ErrorController;
+
 class Router {
 
     private static $self_inst = null;
@@ -25,15 +27,15 @@ class Router {
     }
 
     public function route($controller = null, $method = null) {
+      
+        ($controller) ?: $controller = $this->request_stack[0]??null;
+        ($method) ?: $method = $this->request_stack[1]??null;
 
-        ($controller) ?: $controller = $this->request_stack[0];
-        ($method) ?: $method = $this->request_stack[1];
-
-        $controller_class = '\\Controllers\\' . ucfirst($controller) . 'Controller';
+        $controller_class = '\\Http\\Controllers\\' . ucfirst($controller) . 'Controller';
         if (class_exists($controller_class)) {
             $controller_inst = $controller_class::getInstance();
         } else {
-            $controller_inst = \Controllers\ErrorController::getInstance();
+            $controller_inst = ErrorController::getInstance();
             $controller_inst->indexAction($this->getRequestParams());
             return false;
         }
@@ -43,7 +45,7 @@ class Router {
                 is_callable(array($controller_inst, $method_name), false)) {
             $controller_inst->$method_name($this->getRequestParams());
         } else {
-            \Controllers\ErrorController::getInstance()->indexAction($this->getRequestParams());
+            ErrorController::getInstance()->indexAction($this->getRequestParams());
         }
     }
 

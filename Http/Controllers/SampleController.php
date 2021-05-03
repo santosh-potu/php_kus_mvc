@@ -1,5 +1,5 @@
 <?php
-namespace Controllers;
+namespace Http\Controllers;
 
 class SampleController extends BaseController {
 
@@ -7,7 +7,7 @@ class SampleController extends BaseController {
     protected $response;
 
     protected function __construct() {
-        $this->db = new \Kus\Db\DbConnection;
+        $this->db = new \Kus\Db\DbConnection();
         parent::__construct();
     }
 
