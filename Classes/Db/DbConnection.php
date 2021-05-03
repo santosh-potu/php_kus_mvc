@@ -1,12 +1,12 @@
 <?php
 
-namespace Kus;
+namespace Kus\Db;
 
 class DbConnection {
 
     protected $pdo;
 
-    function __construct() {
+    public function __construct() {
         try {
             $this->pdo = \Kus\Application::getInstance()->getDbConnection();
         } catch (\PDOException $ex) {
@@ -14,7 +14,7 @@ class DbConnection {
         }
     }  
 
-    function query($sql_statement, $bind_values = array(), $return_type = GET_RECORDSET, $fetch_style = \PDO::FETCH_BOTH) {
+    public function query($sql_statement, $bind_values = array(), $return_type = GET_RECORDSET, $fetch_style = \PDO::FETCH_BOTH) {
 
         if (!trim($sql_statement)) {
             return false;
@@ -38,7 +38,7 @@ class DbConnection {
         return $result;
     }
 
-    function insert($table_name, $data) {
+    public function insert($table_name, $data) {
 
         if (!strlen(trim($table_name)) || !( count($data) && is_array($data))) {
             return ['error' => true];
@@ -61,7 +61,7 @@ class DbConnection {
         return $result;
     }
 
-    function update($table_name, $update_column, $where_column, $limit_num = "") {
+    public function update($table_name, $update_column, $where_column, $limit_num = "") {
 
         if (!$table_name || !is_array($update_column)) {
             return false;
@@ -98,7 +98,7 @@ class DbConnection {
         return $result;
     }
 
-    function delete($table_name, $where_column, $limit_num = "") {
+    public function delete($table_name, $where_column, $limit_num = "") {
 
         if (!$table_name) {
             return false;
@@ -131,8 +131,7 @@ class DbConnection {
         return $result;
     }
 
-    function dmlQuery($query) {
-
+    public function dmlQuery($query) {
         try {
             $result = $this->pdo->exec($query);
         } catch (\Exception $ex) {

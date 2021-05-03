@@ -1,5 +1,5 @@
 <?php
-namespace Kus;
+namespace Kus\Db;
 
 class QueryHelper{
 

@@ -7,7 +7,7 @@ class SampleController extends BaseController {
     protected $response;
 
     protected function __construct() {
-        $this->db = new \Kus\DbConnection;
+        $this->db = new \Kus\Db\DbConnection;
         parent::__construct();
     }
 
