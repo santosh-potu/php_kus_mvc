@@ -44,12 +44,14 @@ class Application{
      * Flushes out put buffer
      */
     public function flushOb(){
-        // Put all of the above ouptut into a variable
-        // This has to be before you "clean" the buffer
-        $content = ob_get_contents();  
-        // Erase the buffer in case we want to use it for something else later
-        ob_end_clean();
-        // All of the data that was in the buffer is now in $content
-        echo $content;
+        if(OB_START){
+            // Put all of the above ouptut into a variable
+            // This has to be before you "clean" the buffer
+            $content = ob_get_contents();  
+            // Erase the buffer in case we want to use it for something else later
+            ob_end_clean();
+            // All of the data that was in the buffer is now in $content
+            echo $content;
+        }
     }
 }

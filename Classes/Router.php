@@ -26,12 +26,11 @@ class Router {
         }
     }
 
-    public function route($controller = null, $method = null) {
-      
+    public function route($controller = null, $method = null) {      
         ($controller) ?: $controller = $this->request_stack[0]??null;
         ($method) ?: $method = $this->request_stack[1]??null;
-
-        $controller_class = '\\Http\\Controllers\\' . ucfirst($controller) . 'Controller';
+        $controller_class = '\\Http\\Controllers\\' . $controller. 'Controller';
+        
         if (class_exists($controller_class)) {
             $controller_inst = $controller_class::getInstance();
         } else {

@@ -1,6 +1,4 @@
 <?php
-//start out put buffering
-ob_start();
 
 define('APP_PATH',dirname(__DIR__));
 define('CONFIG_DIR',APP_PATH.DIRECTORY_SEPARATOR.'config');
