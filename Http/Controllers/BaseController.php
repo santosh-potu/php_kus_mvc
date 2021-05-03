@@ -23,5 +23,17 @@ class BaseController {
     public function indexAction($args = null, $optional = null) {
         $this->view->render('index', $args);
     }
+    
+    public function loadModel($model,$args = null){
+        try{
+        $modelName = $model.'Model';
+        $modelClass = "Kus\\Model\\{$modelName}";
+        $this->$modelName = (new \ReflectionClass($modelClass))->newInstance($args);
+        }catch(\Exception $ex){
+            error_log($ex->getMessage());
+            return false;
+        }
+        return $this->$modelName;
+    }
 
 }

@@ -7,26 +7,19 @@ class SampleController extends BaseController {
     protected $response;
 
     protected function __construct() {
-        $this->db = new \Kus\Db\DbConnection();
         parent::__construct();
+        $this->loadModel("Kus",['table_name' => 'users']); //optional table name
     }
 
-    public function getRecordsAction($args = null, $optional = null) {
-        $records = null;
-        $sql = "SELECT * FROM users";
-        $data = $this->db->query($sql, [], GET_RECORDSET, \PDO::FETCH_ASSOC);
-        foreach($data as $record){
-            $records[] = $record;
-        }
+    public function getRecordsAction($args = null) {
+        $records = $this->KusModel->getAll();        
         $output = ['data' => $records];
         $this->view->renderJson($output);
     }
 
-    public function insertRecordAction($args = null, $optional = null) {
-
-        $table_name = 'users';
+    public function insertRecordAction($args = null) {
         $data = array('Name' => 'test'. rand(), 'Email' => 'test'.rand().'@gmail.com', 'Pwd' => 'test@123');
-        $result = $this->db->insert($table_name, $data);
+        $result = $this->KusModel->createUser($data);
         if(isset($result['error'])){
             $http_status_code = 500;
             $message = "Unable to insert";
@@ -38,12 +31,9 @@ class SampleController extends BaseController {
         $this->view->renderJson($output,$http_status_code);
     }
 
-    public function updateRecordAction($args = null, $optional = null) {
-
-        $table_name = 'users';
+    public function updateRecordAction($args = null) {
         $data = array('Name' => 'test'.rand(), 'Email' => "test".rand()."@gmail.com", 'Pwd' => 'test@123');
-        $where_column = array('id' => $args[0]);
-        $result = $this->db->update($table_name, $data, $where_column);
+        $result = $this->KusModel->updateUser($data, array('id' => $args[0]));
         if(!$result){
             $http_status_code = 400;
             $message = "Unable to update";
@@ -55,11 +45,8 @@ class SampleController extends BaseController {
         $this->view->renderJson($output,$http_status_code);
     }
 
-    public function deleteRecordAction($args = null, $optional = null) {
-
-        $table_name = 'users';
-        $where_column = array('id' => $args[0]);
-        $result = $this->db->delete($table_name,$where_column);
+    public function deleteRecordAction($args = null) {
+        $result = $this->KusModel->deleteUser(array('id' => $args[0]));
         if(!$result){
             $http_status_code = 400;
             $message = "Unable to delete";
