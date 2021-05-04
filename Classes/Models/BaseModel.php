@@ -1,5 +1,5 @@
 <?php
-namespace Kus\Model;
+namespace Kus\Models;
 
 use Kus\Db\DbConnection;
 

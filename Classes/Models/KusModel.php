@@ -1,5 +1,5 @@
 <?php
-namespace Kus\Model;
+namespace Kus\Models;
 
 class KusModel extends BaseModel {
     

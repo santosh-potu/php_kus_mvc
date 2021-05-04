@@ -27,7 +27,7 @@ class BaseController {
     public function loadModel($model,$args = null){
         try{
         $modelName = $model.'Model';
-        $modelClass = "Kus\\Model\\{$modelName}";
+        $modelClass = "Kus\\Models\\{$modelName}";
         $this->$modelName = (new \ReflectionClass($modelClass))->newInstance($args);
         }catch(\Exception $ex){
             error_log($ex->getMessage());
