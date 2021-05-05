@@ -65,7 +65,4 @@ class SampleController extends BaseController {
         $this->_view->renderJson($output,$http_status_code);
     }
     
-    public static function static($param) {
-        
-    }
 }
