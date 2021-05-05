@@ -2,33 +2,37 @@
 
 namespace Http\Controllers;
 
+use Http\Request;
+
 class BaseController {
 
-    protected static $self_instances;
-    protected $view;
+    protected static $_selfInstances;
+    protected $_view;
+    protected $_request;
 
     protected function __construct() {
-        $this->view = new \Kus\BaseView();
+        $this->_view = new \Kus\BaseView();
+        $this->_request = Request::getInstance();
     }
 
     public static function getInstance() {
         $calledClass = get_called_class();
-        if (!isset(self::$self_instances[$calledClass])){
-            self::$self_instances[$calledClass] = new $calledClass();
+        if (!isset(self::$_selfInstances[$calledClass])){
+            self::$_selfInstances[$calledClass] = new $calledClass();
         }
 
-        return self::$self_instances[$calledClass];
+        return self::$_selfInstances[$calledClass];
     }
 
     public function indexAction($args = null, $optional = null) {
-        $this->view->render('index', $args);
+        $this->_view->render('index', $args);
     }
     
     public function loadModel($model,$args = null){
         try{
-        $modelName = $model.'Model';
-        $modelClass = "Kus\\Model\\{$modelName}";
-        $this->$modelName = (new \ReflectionClass($modelClass))->newInstance($args);
+            $modelName = $model.'Model';
+            $modelClass = "Kus\\Models\\{$modelName}";
+            $this->$modelName = (new \ReflectionClass($modelClass))->newInstance($args);
         }catch(\Exception $ex){
             error_log($ex->getMessage());
             return false;

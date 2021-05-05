@@ -4,11 +4,11 @@ namespace Kus\Db;
 
 class DbConnection {
 
-    protected $pdo;
+    protected $_pdo;
 
     public function __construct() {
         try {
-            $this->pdo = \Kus\Application::getInstance()->getDbConnection();
+            $this->_pdo = \Kus\Application::getInstance()->getDbConnection();
         } catch (\PDOException $ex) {
             echo 'Connection failed:' . $ex->getMessage();
         }
@@ -19,9 +19,9 @@ class DbConnection {
         if (!trim($sql_statement)) {
             return false;
         }
-        $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+        $this->_pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
         try {
-            $stmt = $this->pdo->prepare($sql_statement);
+            $stmt = $this->_pdo->prepare($sql_statement);
             $stmt->execute($bind_values);
             if ($return_type == GET_RECORDSET) {       //returns a 2-dimensional array
                 $result = $stmt->fetchAll($fetch_style);
@@ -49,10 +49,10 @@ class DbConnection {
                 implode(',', $question_marks);
 
         try {
-            $stmt = $this->pdo->prepare($sql);
+            $stmt = $this->_pdo->prepare($sql);
             $stmt->execute($insert_values);
             $result['row_count'] = $stmt->rowCount();
-            $result['id'] = $this->pdo->lastInsertId();
+            $result['id'] = $this->_pdo->lastInsertId();
         } catch (\PDOException $ex) {
             error_log($ex->getMessage());
             $result['error'] = $ex->getMessage();
@@ -66,7 +66,7 @@ class DbConnection {
         if (!$table_name || !is_array($update_column)) {
             return false;
         }
-        $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+        $this->_pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
         $set_clause = " UPDATE $table_name SET ";
         $where_clause = $where_column ? " WHERE " : "";
         $limit_clause = $limit_num ? " LIMIT $limit_num " : "";
@@ -88,7 +88,7 @@ class DbConnection {
 
         $update_query = " $set_clause $where_clause $limit_clause ";
         try {
-            $stmt = $this->pdo->prepare($update_query);
+            $stmt = $this->_pdo->prepare($update_query);
             $stmt->execute($bindings);
             $result = $stmt->rowCount();
         } catch (\Exception $ex) {
@@ -103,7 +103,7 @@ class DbConnection {
         if (!$table_name) {
             return false;
         }
-        $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+        $this->_pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
         $delete_clause = " DELETE  FROM $table_name ";
         $where_clause = $where_column ? " WHERE " : "";
         $limit_clause = $limit_num ? " LIMIT $limit_num " : "";
@@ -121,7 +121,7 @@ class DbConnection {
 
         $delete_query = "$delete_clause $where_clause $limit_clause ";
         try {
-            $stmt = $this->pdo->prepare($delete_query);
+            $stmt = $this->_pdo->prepare($delete_query);
             $stmt->execute($bindings);
             $result = $stmt->rowCount();
         } catch (\Exception $ex) {
@@ -133,7 +133,7 @@ class DbConnection {
 
     public function dmlQuery($query) {
         try {
-            $result = $this->pdo->exec($query);
+            $result = $this->_pdo->exec($query);
         } catch (\Exception $ex) {
             error_log($ex->getMessage());
             $result = false;

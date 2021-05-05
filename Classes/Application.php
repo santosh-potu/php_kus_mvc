@@ -3,41 +3,32 @@ namespace Kus;
 
 class Application{
     
-    protected static $db;
-    protected static $self_inst;
-    protected static $router;
+    use \Kus\SingletonTrait;
+    protected static $_db;
+    protected static $_router;
     
-    private function __construct(){
-        self::$db = $this->getDbConnection();
-    }
-    
-    public static function getInstance(){
-        if (self::$self_inst){
-            return self::$self_inst;
-        }else{
-            self::$self_inst = new Application();
-            return self::$self_inst;
-        }
+    protected function __construct(){
+        self::$_db = $this->getDbConnection();
     }
     
     public function getDbConnection(){
-        if(!isset(self::$db)){
+        if(!isset(self::$_db)){
             try{
-                self::$db = new \PDO(PDO_DSN, DB_USER,DB_PWD);
-                self::$db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-                self::$db->query('SET CHARSET '.CHARSET); //Setting character set
+                self::$_db = new \PDO(PDO_DSN, DB_USER,DB_PWD);
+                self::$_db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                self::$_db->query('SET CHARSET '.CHARSET); //Setting character set
             }catch(\PDOException $ex){
                 echo 'Connection failed:'.$ex->getMessage();
             }
         }
-        return self::$db;
+        return self::$_db;
     }
     
     public function getRouter(){
-        if(!isset(self::$router)){
-            self::$router = \Kus\Router::getInstance();
+        if(!isset(self::$_router)){
+            self::$_router = \Kus\Router::getInstance();
         }
-        return self::$router;
+        return self::$_router;
     }
     
     /**

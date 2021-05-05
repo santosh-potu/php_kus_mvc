@@ -1,7 +1,7 @@
 {
     "autoload": {
         "psr-4": {"Kus\\": "Classes/",
-                  "Http\\Controllers\\":"Http/Controllers/"
+                  "Http\\":"Http/"
                 }
     }
 }
