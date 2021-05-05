@@ -2,6 +2,8 @@
 
 namespace Kus;
 
+use Http\Router;
+
 class BaseView {
 
     protected $_router;
@@ -9,7 +11,7 @@ class BaseView {
     protected $_params;
 
     public function __construct() {
-        $this->_router = \Kus\Router::getInstance();
+        $this->_router = Router::getInstance();
         $this->_requestParams = $this->_router->getRequestParams();
     }
 

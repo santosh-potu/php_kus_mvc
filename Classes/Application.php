@@ -5,7 +5,7 @@ class Application{
     
     use \Kus\SingletonTrait;
     protected static $_db;
-    protected static $_router;
+    protected static $_httpRouter;
     
     protected function __construct(){
         self::$_db = $this->getDbConnection();
@@ -24,11 +24,11 @@ class Application{
         return self::$_db;
     }
     
-    public function getRouter(){
-        if(!isset(self::$_router)){
-            self::$_router = \Kus\Router::getInstance();
+    public function getHttpRouter(){
+        if(!isset(self::$_httpRouter)){
+            self::$_httpRouter = \Http\Router::getInstance();
         }
-        return self::$_router;
+        return self::$_httpRouter;
     }
     
     /**
