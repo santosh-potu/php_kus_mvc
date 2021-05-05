@@ -1,6 +1,6 @@
 <?php
 
-namespace Kus;
+namespace Http;
 
 use Http\Controllers\ErrorController;
 use Http\Request;

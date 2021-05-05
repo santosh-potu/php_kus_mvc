@@ -7,7 +7,7 @@ require_once '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'conf
 $app = Kus\Application::getInstance();
 $db = $app->getDbConnection();
 
-$router = $app->getRouter();
+$router = $app->getHttpRouter();
 $router->route();
 
 $app->flushOb();
