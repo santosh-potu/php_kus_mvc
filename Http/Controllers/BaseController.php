@@ -28,7 +28,7 @@ class BaseController {
         $this->_view->render('index', $args);
     }
     
-    public function loadModel($model,$args = null){
+    protected function loadModel($model,$args = null){
         try{
             $modelName = $model.'Model';
             $modelClass = "Kus\\Models\\{$modelName}";

@@ -3,12 +3,12 @@ namespace Http;
 
 class Request {
     use \Kus\SingletonTrait;
-    protected $_requestType;
+    protected $_requestMethod;
     protected $_params;
     protected $_isJson;
     
     protected function __construct() {
-        $this->_requestType = $this->setRequestType();
+        $this->_requestMethod = $this->setRequestMethod();
         $this->_params = $this->scanParams();
     }
     
@@ -32,12 +32,20 @@ class Request {
         return $_REQUEST[array_keys($this->_params)[--$num]];
     }
     
-    protected function setRequestType(){
-        $this->_requestType = strtolower($_SERVER['REQUEST_METHOD']);
-        return $this->_requestType;
+    protected function setRequestMethod(){
+        $this->_requestMethod = strtolower($_SERVER['REQUEST_METHOD']);
+        return $this->_requestMethod;
     }
     
     public function isJson(){
         return $this->_isJson;
+    }
+    
+    public function isAjax(){
+        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) 
+                && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'));
+    }
+    public function getRequestMethod(){
+        return $this->_requestMethod;
     }
 }
