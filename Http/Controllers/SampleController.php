@@ -3,18 +3,15 @@ namespace Http\Controllers;
 
 class SampleController extends BaseController {
 
-    protected $db;
-    protected $response;
-
     protected function __construct() {
         parent::__construct();
-        $this->loadModel("Kus",['table_name' => 'users']); //optional table name
+        $this->loadModel("Kus",['tableName' => 'users']); //optional table name
     }
 
     public function getRecordsAction($args = null) {
         $records = $this->KusModel->getAll();        
         $output = ['data' => $records];
-        $this->view->renderJson($output);
+        $this->_view->renderJson($output);
     }
 
     public function insertRecordAction($args = null) {
@@ -28,7 +25,7 @@ class SampleController extends BaseController {
             $message = "Succefully inserted";
         }
         $output = ['message' => $message];
-        $this->view->renderJson($output,$http_status_code);
+        $this->_view->renderJson($output,$http_status_code);
     }
 
     public function updateRecordAction($args = null) {
@@ -42,7 +39,7 @@ class SampleController extends BaseController {
             $message = "Succefully updated";
         }
         $output = ['message' => $message];
-        $this->view->renderJson($output,$http_status_code);
+        $this->_view->renderJson($output,$http_status_code);
     }
 
     public function deleteRecordAction($args = null) {
@@ -55,7 +52,7 @@ class SampleController extends BaseController {
             $message = "Succefully deleted";
         }
         $output = ['message' => $message];
-        $this->view->renderJson($output,$http_status_code);
+        $this->_view->renderJson($output,$http_status_code);
     }
-
+    
 }

@@ -9,10 +9,10 @@ class ErrorController extends BaseController{
                 (isset($optional['json']) && $optional['json'] == 1) ) {
         // this is ajax request, do something
             $data = ['message' => 'Not found'];
-            $this->view->renderJson($data,404);
+            $this->_view->renderJson($data,404);
         }else{
             http_response_code(404);
-            $this->view->render('404',$args);
+            $this->_view->render('404',$args);
         }
     }
     
