@@ -28,16 +28,8 @@ class Router {
         $request_method = ($this->_request->getRequestMethod() == 'get')?'':
                 $this->_request->getRequestMethod();
         $method_name = ($method ? $method :'index').
-                ucfirst($request_method).'Action';
-        
-        $jsonReq = Request::getInstance()->isJson();
-        if($jsonReq){
-            $optional = ['json' => $jsonReq];
-        }else{
-            $optional = null;
-        }
-        
-        Dispatcher::getInstance()->dispatch($controller, $method_name, $request_method,$optional);
+                ucfirst($request_method).'Action';     
+        Dispatcher::getInstance()->dispatch($controller, $method_name, $request_method);
     }
 
     public function getControllerParam() {
