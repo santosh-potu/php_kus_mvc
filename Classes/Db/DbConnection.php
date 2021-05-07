@@ -140,4 +140,27 @@ class DbConnection {
         }
         return $result;
     }
+    
+    public function insertBatch($table_name, $data) {
+
+        if (!strlen(trim($table_name)) || !( count($data) && is_array($data))) {
+            return ['error' => true];
+        }
+        $insert_values = array();
+        foreach($data as $d){
+            $question_marks[] = '('  . QueryHelper::placeholders('?', sizeof($d)) . ')';
+            $insert_values = array_merge($insert_values, array_values($d));
+        }
+        $sql = "INSERT INTO $table_name (" . implode(",", array_keys($data[0])) . ") VALUES " .
+                    implode(',', $question_marks);            
+        try {
+            $stmt = $this->_pdo->prepare($sql);
+            $stmt->execute($insert_values);
+            $result = $stmt->rowCount();
+        } catch (\PDOException $ex) {
+            error_log($ex->getMessage());
+            $result['error'] = $ex->getMessage();
+        }            
+        return $result;
+    }
 }
